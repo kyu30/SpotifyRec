@@ -27,8 +27,6 @@ pub fn random_sample(
     let mut rng = thread_rng();
     records.shuffle(&mut rng);
     records.truncate(sample_size);
-
-    // Write the sampled records to a new CSV file
     let file_out = File::create(output_path)?;
     let mut writer = WriterBuilder::new().from_writer(file_out);
 
@@ -72,7 +70,6 @@ pub fn knn_graph(records: &[Record], k: usize) -> Graph<Record, f32> {
         distances.sort_by(|a, b| a.0.partial_cmp(&b.0).unwrap());
         for &(d, near_idx) in distances.iter().take(k) {
             let weight = d;
-            //println!("ADDING {} and {:?}", i, near_idx);
             graph.add_edge(idx, near_idx, weight);
         }
     }
@@ -102,9 +99,7 @@ pub fn top(
 ) {
     let mut results = Vec::new();
     let map = index(records);
-    //println!("Searching for song: {}", song_name);
     if let Some((node_index, _)) = graph.node_indices().find_map(|n| {
-        //println!("Checking node: {}", &graph[n].track_name);
         if &graph[n].track_id.trim() == &song_name {
             Some((n, &graph[n]))
         } else {
