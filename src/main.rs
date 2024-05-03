@@ -1,15 +1,21 @@
 //Add artist lookup/recommendations, avg distance calc in impl, mod library of something
 #[warn(unused_imports)]
-mod record;
-mod utils;
-mod recs;
+pub mod record;
+pub mod utils;
+pub mod recs;
+//pub mod graphs;
 use std::io::{self, Write, Read};
-fn main() {
-    let file = "dataset.csv";
+fn main(){
+    if let Err(err) = utils::random_sample("dataset.csv", "dataset1.csv", 500) {
+        println!("Error sampling data: {}", err);
+    }
+    let file = "dataset1.csv";
     let mut data = utils::read(file);
     for mut record in &mut data{
         record.clean()
     }
+    let graph = utils::knn_graph(&data, 25);
+    let centrality = utils::calc_centrality(&graph);
     loop {
         print!("Enter a song name: ");
         io::stdout().flush().unwrap();
@@ -30,8 +36,9 @@ fn main() {
 
         if let Some(target_track) = found_track {
             let dist = found_track.unwrap().avg_dist(&data);
-            println!("The average distance of {} to other songs is {}", &track_name, dist);
-            utils::recommend(&data, &track_name, &artist_name, 5);
+            //println!("The average distance of {} to other songs is {}", &track_name, dist);
+            utils::top(&data, &graph, &target_track.track_id, &centrality);
+            //recs::recommend(&data, &track_name, &artist_name, 5);
             break;
         } else {
             println!("Track '{}' not found. Would you like to try again? (y/n): ", track_name);
@@ -41,5 +48,5 @@ fn main() {
                 break;
             }
         }
+        }
     }
-}

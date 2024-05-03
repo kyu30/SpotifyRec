@@ -1,5 +1,6 @@
 use serde::{Deserialize, Serialize};
-use crate::utils::{euclidean_d};
+use crate::utils;
+use std::collections::HashMap;
 
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
 pub struct Record {
@@ -7,7 +8,7 @@ pub struct Record {
     pub artists: String,
     pub album_name: String,
     pub track_name: String,
-    pub popularity: f32,
+    pub popularity: u32,
     pub explicit: String,
     pub danceability: f32,
     pub energy: f32,
@@ -31,7 +32,7 @@ impl Record {
         let mut count = 0.0;
         for i in data{
             if i != self{
-                count += euclidean_d(self, &i);
+                count += utils::euclidean_d(self, &i);
             }
         }
         count / (data.len() as f32 -1.0) 
