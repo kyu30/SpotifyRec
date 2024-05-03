@@ -1,6 +1,5 @@
-use serde::{Deserialize, Serialize};
 use crate::utils;
-use std::collections::HashMap;
+use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
 pub struct Record {
@@ -28,25 +27,13 @@ impl Record {
         self.track_name = self.track_name.trim().to_string();
         self.explicit = self.explicit.trim().to_lowercase();
     }
-    pub fn avg_dist(&self, data:&Vec<Record>) -> f32{
+    pub fn avg_dist(&self, data: &Vec<Record>) -> f32 {
         let mut count = 0.0;
-        for i in data{
-            if i != self{
+        for i in data {
+            if i != self {
                 count += utils::euclidean_d(self, &i);
             }
         }
-        count / (data.len() as f32 -1.0) 
-    }
-}
-
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
+        count / (data.len() as f32 - 1.0)
     }
 }
