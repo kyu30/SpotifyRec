@@ -138,23 +138,6 @@ pub fn euclidean_d(track1: &Record, track2: &Record) -> f32 {
     .sqrt()
 }
 
-pub fn find_similar<'a>(
-    data: &'a Vec<Record>,
-    target: &'a Record,
-    top_n: usize,
-) -> Vec<&'a Record> {
-    let mut distances: Vec<(&Record, f32)> = data
-        .iter()
-        .filter(|track| {
-            track.track_genre.to_lowercase() == target.track_genre.to_lowercase()
-                && track.track_id != target.track_id
-        })
-        .map(|track| (track, euclidean_d(track, target)))
-        .collect();
-    distances.sort_by(|a, b| a.1.partial_cmp(&b.1).unwrap());
-    distances.iter().take(top_n).map(|d| d.0).collect()
-}
-
 pub fn sim_calc(track1: &Record, track2: &Record) -> f32 {
     let distance = euclidean_d(track1, track2);
     1.0 - (distance / f32::sqrt(5.0)).min(1.0)
