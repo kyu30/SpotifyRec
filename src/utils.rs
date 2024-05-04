@@ -108,9 +108,10 @@ pub fn top(
             .map(|(_, name)| name.clone())
             .collect();
         println!(
-            "Found {} neighbors for {}.",
+            "Found {} neighbors for {} by {}.",
             neighbors.len(),
-            map.get(song_name).unwrap().track_name
+            map.get(song_name).unwrap().track_name,
+            map.get(song_name).unwrap().artists
         );
         println!("Top 5 recommendations");
         for song in &results {
