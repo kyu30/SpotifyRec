@@ -169,22 +169,6 @@ pub fn sim_calc(track1: &Record, track2: &Record) -> f32 {
     1.0 - (distance / f32::sqrt(5.0)).min(1.0)
 }
 
-pub fn recommend(data: &Vec<Record>, target: &str, artist: &str, top_n: usize) {
-    let target_track = search(data, target, Some(artist));
-    if let Some(track) = target_track {
-        let similar = find_similar(data, &track, top_n);
-        println!("Recommendations for '{} by {}:", target, artist);
-        for similar_track in similar {
-            println!(
-                "- '{}' by {}",
-                similar_track.track_name, similar_track.artists
-            );
-        }
-    } else {
-        println!("Track '{}' by '{}' not found", target, artist);
-    }
-}
-
 pub fn search<'a>(
     data: &'a Vec<Record>,
     track_name: &'a str,
