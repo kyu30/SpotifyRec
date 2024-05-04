@@ -1,7 +1,7 @@
 #[warn(unused_imports)]
 pub mod record;
 pub mod utils;
-use std::io::{self, Read, Write};
+use std::io::{self, Write};
 fn main() {
     if let Err(err) = utils::random_sample("dataset.csv", "dataset1.csv", 1000) {
         println!("Error sampling data: {}", err);
