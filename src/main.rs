@@ -11,7 +11,7 @@ fn main() {
     for record in &mut data {
         record.clean()
     }
-    let graph = utils::knn_graph(&data, 25);
+    let graph = utils::graph(&data);
     let centrality = utils::calc_centrality(&graph);
     loop {
         print!("Enter a song name: ");
