@@ -27,13 +27,4 @@ impl Record {
         self.track_name = self.track_name.trim().to_string();
         self.explicit = self.explicit.trim().to_lowercase();
     }
-    pub fn avg_dist(&self, data: &Vec<Record>) -> f32 {
-        let mut count = 0.0;
-        for i in data {
-            if i != self {
-                count += utils::euclidean_d(self, &i);
-            }
-        }
-        count / (data.len() as f32 - 1.0)
-    }
 }
