@@ -37,7 +37,6 @@ pub fn random_sample(
     Ok(())
 }
 
-<<<<<<< HEAD
 pub fn write(graph: &UnGraph<(), ()>, path: &str) -> Result<(), csv::Error> {
     let mut file = File::create(path)?;
     for edge in graph.edge_references() {
@@ -49,9 +48,6 @@ pub fn write(graph: &UnGraph<(), ()>, path: &str) -> Result<(), csv::Error> {
 }
 
 pub fn graph(records: &[Record]) -> Graph<Record, f32> {
-=======
-pub fn knn_graph(records: &[Record], k: usize) -> Graph<Record, f32> {
->>>>>>> dfb450b6120496e969c34e8d8332002401b37f61
     let mut graph = Graph::new();
     let mut node_indices = Vec::new();
     for record in records {
