@@ -37,7 +37,21 @@ pub fn random_sample(
     Ok(())
 }
 
+<<<<<<< HEAD
+pub fn write(graph: &UnGraph<(), ()>, path: &str) -> Result<(), csv::Error> {
+    let mut file = File::create(path)?;
+    for edge in graph.edge_references() {
+        let source = edge.source();
+        let target = edge.target();
+        writeln!(file, "{} {}", source.index(), target.index())?;
+    }
+    Ok(())
+}
+
+pub fn graph(records: &[Record]) -> Graph<Record, f32> {
+=======
 pub fn knn_graph(records: &[Record], k: usize) -> Graph<Record, f32> {
+>>>>>>> dfb450b6120496e969c34e8d8332002401b37f61
     let mut graph = Graph::new();
     let mut node_indices = Vec::new();
     for record in records {
@@ -58,9 +72,13 @@ pub fn knn_graph(records: &[Record], k: usize) -> Graph<Record, f32> {
             }
         }
         distances.sort_by(|a, b| a.0.partial_cmp(&b.0).unwrap());
-        for &(d, near_idx) in distances.iter().take(k) {
-            let weight = d;
-            graph.add_edge(idx, near_idx, weight);
+        let values:Vec<f32> = distances.iter().map(|&(v, _)| v).collect();
+        let q3 = (0.75 * (distances.len() as f32 - 1.0)).round() as usize;
+        for &(d, near_idx) in distances.iter() {
+            if d > values[q3]{
+                let weight = d;
+                graph.add_edge(idx, near_idx, weight);
+            }
         }
     }
     graph
@@ -102,16 +120,29 @@ pub fn top(
             .map(|n| (centrality[&n], &graph[n].track_id))
             .collect();
         neighbors.sort_by(|a, b| b.0.cmp(&a.0));
+        let mut avg_dist:usize = 0;
+        for (i, j) in &neighbors{
+            avg_dist += i;
+        }
+        avg_dist/=neighbors.len();
         results = neighbors
             .iter()
             .take(5)
             .map(|(_, name)| name.clone())
             .collect();
         println!(
+<<<<<<< HEAD
+            "Found {} neighbors for {} by {} with an average distance of {}.",
+            neighbors.len(),
+            map.get(song_name).unwrap().track_name,
+            map.get(song_name).unwrap().artists,
+            avg_dist
+=======
             "Found {} neighbors for {} by {}.",
             neighbors.len(),
             map.get(song_name).unwrap().track_name,
             map.get(song_name).unwrap().artists
+>>>>>>> dfb450b6120496e969c34e8d8332002401b37f61
         );
         println!("Top 5 recommendations");
         for song in &results {
@@ -143,6 +174,10 @@ pub fn sim_calc(track1: &Record, track2: &Record) -> f32 {
     1.0 - (distance / f32::sqrt(5.0)).min(1.0)
 }
 
+<<<<<<< HEAD
+
+=======
+>>>>>>> dfb450b6120496e969c34e8d8332002401b37f61
 pub fn search<'a>(
     data: &'a Vec<Record>,
     track_name: &'a str,
